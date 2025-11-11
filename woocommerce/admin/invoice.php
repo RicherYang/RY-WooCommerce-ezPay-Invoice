@@ -1,0 +1,182 @@
+<?php
+
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
+final class RY_WEZI_WC_Admin_Invoice
+{
+    protected static $_instance = null;
+
+    public static function instance(): RY_WEZI_WC_Admin_Invoice
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+            self::$_instance->do_init();
+        }
+
+        return self::$_instance;
+    }
+
+    protected function do_init(): void
+    {
+        include_once RY_WEZI_PLUGIN_DIR . 'woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php';
+        include_once RY_WEZI_PLUGIN_DIR . 'woocommerce/admin/settings/invoice.php';
+        RY_WEZI_WC_Admin_Setting_Invoice::instance();
+
+        add_filter('enable_ry_invoice', [$this, 'add_enable_ry_invoice']);
+        add_action('admin_enqueue_scripts', [$this, 'add_scripts']);
+
+        add_action('woocommerce_admin_order_data_after_billing_address', ['RY_WEZI_MetaBox_Invoice_Data', 'output']);
+        add_action('woocommerce_update_order', [$this, 'save_order_update']);
+
+        add_action('admin_notices', [$this, 'bulk_action_notices']);
+        if (class_exists('Automattic\WooCommerce\Utilities\OrderUtil') && OrderUtil::custom_orders_table_usage_is_enabled()) {
+            if ('edit' !== ($_GET['action'] ?? '')) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended , WordPress.Security.ValidatedSanitizedInput.MissingUnslash , WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                add_filter('manage_woocommerce_page_wc-orders_columns', [$this, 'add_invoice_column'], 11);
+                add_action('manage_woocommerce_page_wc-orders_custom_column', [$this, 'show_invoice_column'], 11, 2);
+
+                add_filter('bulk_actions-woocommerce_page_wc-orders', [$this, 'shop_order_list_action']);
+                add_filter('handle_bulk_actions-woocommerce_page_wc-orders', [$this, 'do_shop_order_action'], 10, 3);
+            }
+        } else {
+            add_filter('manage_shop_order_posts_columns', [$this, 'add_invoice_column'], 11);
+            add_action('manage_shop_order_posts_custom_column', [$this, 'show_invoice_column'], 11, 2);
+
+            add_filter('bulk_actions-edit-shop_order', [$this, 'shop_order_list_action']);
+            add_filter('handle_bulk_actions-edit-shop_order', [$this, 'do_shop_order_action'], 10, 3);
+        }
+    }
+
+    public function add_enable_ry_invoice($enable)
+    {
+        $enable[] = 'ezpay';
+
+        return $enable;
+    }
+
+    public function add_scripts()
+    {
+        $screen = get_current_screen();
+        $screen_id = $screen ? $screen->id : '';
+
+        if (in_array($screen_id, ['shop_order', 'edit-shop_order', 'woocommerce_page_wc-settings', 'woocommerce_page_wc-orders'])) {
+            $asset_info = include RY_WEZI_PLUGIN_DIR . 'assets/admin/ry-invoice.asset.php';
+            wp_enqueue_script('ry-wsi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.js', $asset_info['dependencies'], $asset_info['version'], true);
+            wp_enqueue_style('ry-wsi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.css', [], $asset_info['version']);
+
+            wp_localize_script('ry-wsi-admin-invoice', 'RyWsiAdminInvoiceParams', [
+                'i18n' => [
+                    'get' => __('Issue invoice.<br>Please wait.', 'ry-woocommerce-ezpay-invoice'),
+                    'invalid' => __('Invalid invoice.<br>Please wait.', 'ry-woocommerce-ezpay-invoice'),
+                ],
+                '_nonce' => [
+                    'get' => wp_create_nonce('get-invoice'),
+                    'invalid' => wp_create_nonce('invalid-invoice'),
+                ],
+            ]);
+        }
+    }
+
+    public function save_order_update($order_ID)
+    {
+        if ($order = wc_get_order($order_ID)) {
+            if (isset($_POST['_invoice_type'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                remove_action('woocommerce_update_order', [$this, 'save_order_update']);
+                $order->update_meta_data('_invoice_type', sanitize_locale_name($_POST['_invoice_type'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                $order->update_meta_data('_invoice_carruer_type', sanitize_locale_name($_POST['_invoice_carruer_type'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                $order->update_meta_data('_invoice_carruer_no', strtoupper(sanitize_text_field($_POST['_invoice_carruer_no'] ?? ''))); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                $order->update_meta_data('_invoice_no', sanitize_key($_POST['_invoice_no'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                $order->update_meta_data('_invoice_donate_no', sanitize_key($_POST['_invoice_donate_no'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+                $invoice_number = strtoupper(sanitize_locale_name($_POST['_invoice_number'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                if (!empty($invoice_number)) {
+                    $order->update_meta_data('_invoice_number', $invoice_number);
+                    $order->update_meta_data('_invoice_random_number', sanitize_key($_POST['_invoice_random_number'] ?? '')); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+                    $date = sanitize_key($_POST['_invoice_date'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    $hour = intval($_POST['_invoice_date_hour'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    $minute = intval($_POST['_invoice_date_minute'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    $second = intval($_POST['_invoice_date_second'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    $date = gmdate('Y-m-d H:i:s', strtotime($date . ' ' . $hour . ':' . $minute . ':' . $second));
+                    $order->update_meta_data('_invoice_date', $date);
+                }
+                $order->save();
+                add_action('woocommerce_update_order', [$this, 'save_order_update']);
+            }
+        }
+    }
+
+    public function bulk_action_notices()
+    {
+        $bulk_action = wp_unslash($_GET['bulk_action'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended , WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ('ry_get_invoice' === $bulk_action) {
+            $number = intval($_GET['ry_geted'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+            /* translators: %s: count */
+            $message = sprintf(_n('%s order issue invoice.', '%s orders issue invoice.', $number, 'ry-woocommerce-ezpay-invoice'), number_format_i18n($number));
+            echo '<div class="updated"><p>' . esc_html($message) . '</p></div>';
+        }
+    }
+
+    public function add_invoice_column($columns)
+    {
+        if (!isset($columns['invoice-number'])) {
+            $add_index = array_search('order_status', array_keys($columns)) + 1;
+            $pre_array = array_splice($columns, 0, $add_index);
+            $array = [
+                'invoice-number' => __('Invoice number', 'ry-woocommerce-ezpay-invoice'),
+            ];
+            $columns = array_merge($pre_array, $array, $columns);
+        }
+        return $columns;
+    }
+
+    public function show_invoice_column($column, $order)
+    {
+        if ('invoice-number' == $column) {
+            if (!is_object($order)) {
+                global $the_order;
+                $order = $the_order;
+            }
+
+            $invoice_number = $order->get_meta('_invoice_number');
+            if ('zero' == $invoice_number) {
+                esc_html_e('Zero no invoice', 'ry-woocommerce-ezpay-invoice');
+            } elseif ('negative' == $invoice_number) {
+                esc_html_e('Negative no invoice', 'ry-woocommerce-ezpay-invoice');
+            } else {
+                echo esc_html($order->get_meta('_invoice_number'));
+            }
+        }
+    }
+
+    public function shop_order_list_action($actions)
+    {
+        $actions['ry_get_invoice'] = __('Issue invoice', 'ry-woocommerce-ezpay-invoice');
+
+        return $actions;
+    }
+
+    public function do_shop_order_action($redirect_to, $action, $ids)
+    {
+        if ('ry_get_invoice' === $action) {
+            $geted = 0;
+
+            foreach ($ids as $order_ID) {
+                $order = wc_get_order($order_ID);
+                $invoice_number = $order->get_meta('_invoice_number');
+                if (empty($invoice_number) && $order->is_paid()) {
+                    $geted += 1;
+                    RY_WEZI_WC_Invoice_Api::instance()->get($order_ID);
+                }
+            }
+
+            $redirect_to = add_query_arg([
+                'bulk_action' => 'ry_get_invoice',
+                'ry_geted' => $geted,
+            ], $redirect_to);
+        }
+
+        return $redirect_to;
+    }
+}
