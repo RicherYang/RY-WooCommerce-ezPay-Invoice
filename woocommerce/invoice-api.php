@@ -60,13 +60,13 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         $args['ItemUnit'] = implode('|', $args['ItemUnit']);
         $args['ItemAmt'] = implode('|', $args['ItemAmt']);
 
-        RY_WEZI_WC_Invoice::instance()->log('Issue invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
-
         if (RY_WEZI_WC_Invoice::instance()->is_testmode()) {
             $post_url = $this->api_test_url['get'];
         } else {
             $post_url = $this->api_url['get'];
         }
+
+        RY_WEZI_WC_Invoice::instance()->log('Issue invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
         $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
 
         if (null === $result) {

@@ -121,12 +121,12 @@ final class RY_WEZI_WC_Admin_Invoice
     public function add_invoice_column($columns)
     {
         if (!isset($columns['invoice-number'])) {
-            $add_index = array_search('order_status', array_keys($columns)) + 1;
-            $pre_array = array_splice($columns, 0, $add_index);
-            $array = [
+            $add_columns = [
                 'invoice-number' => __('Invoice number', 'ry-woocommerce-ezpay-invoice'),
             ];
-            $columns = array_merge($pre_array, $array, $columns);
+            $pre_idx = array_search('order_status', array_keys($columns)) + 1;
+            $pre_array = array_splice($columns, 0, $pre_idx);
+            $columns = array_merge($pre_array, $add_columns, $columns);
         }
         return $columns;
     }
