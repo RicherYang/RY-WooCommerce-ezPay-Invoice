@@ -59,7 +59,7 @@ final class RY_WEZI_WC_Admin_Setting_Invoice
         }
 
         if (!RY_WEZI_WC_Invoice::instance()->is_testmode()) {
-            if (empty(RY_WEZI::get_option('ezpay_Grvc')) || empty(RY_WEZI::get_option('ezpay_Verify_key'))) {
+            if (empty(RY_WEZI::get_option('ezpay_HashKey')) || empty(RY_WEZI::get_option('ezpay_HashIV'))) {
                 WC_Admin_Settings::add_error(__('ezPay invoice method failed to enable!', 'ry-woocommerce-ezpay-invoice'));
             }
         }

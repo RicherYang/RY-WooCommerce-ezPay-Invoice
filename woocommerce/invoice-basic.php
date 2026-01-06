@@ -231,12 +231,12 @@ final class RY_WEZI_WC_Invoice_Basic
         $invoice_info[] = [
             'key' => 'invoice-type',
             'name' => __('Invoice type', 'ry-woocommerce-ezpay-invoice'),
-            'value' => rywsi_invoice_type_to_name($invoice_type),
+            'value' => rywezi_invoice_type_to_name($invoice_type),
         ];
 
         if ('personal' == $invoice_type) {
             $key = count($invoice_info) - 1;
-            $invoice_info[$key]['value'] .= ' (' . rywsi_carruer_type_to_name($carruer_type) . ')';
+            $invoice_info[$key]['value'] .= ' (' . rywezi_carruer_type_to_name($carruer_type) . ')';
             if (in_array($carruer_type, ['MOICA', 'phone_barcode'])) {
                 $invoice_info[] = [
                     'key' => 'carruer-number',

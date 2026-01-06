@@ -93,10 +93,10 @@ class RY_WEZI_MetaBox_Invoice_Data
             <strong><?php esc_html_e('Invoice date', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html($order->get_meta('_invoice_date')); ?><br>
             <?php } ?>
 
-            <strong><?php esc_html_e('Invoice type', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html(rywsi_invoice_type_to_name($invoice_type)); ?><br>
+            <strong><?php esc_html_e('Invoice type', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html(rywezi_invoice_type_to_name($invoice_type)); ?><br>
 
             <?php if ('personal' == $invoice_type) { ?>
-            <strong><?php esc_html_e('Carruer type', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html(rywsi_carruer_type_to_name($carruer_type)); ?><br>
+            <strong><?php esc_html_e('Carruer type', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html(rywezi_carruer_type_to_name($carruer_type)); ?><br>
 
             <?php if (in_array($carruer_type, ['MOICA', 'phone_barcode'])) { ?>
             <strong><?php esc_html_e('Carruer number', 'ry-woocommerce-ezpay-invoice'); ?>:</strong> <?php echo esc_html($order->get_meta('_invoice_carruer_no')); ?><br>
