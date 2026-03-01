@@ -13,8 +13,8 @@ final class RY_WEZI_update
             return;
         }
 
-        if (version_compare($now_version, '2.0.2', '<')) {
-            RY_WEZI::update_option('version', '2.0.2', true);
+        if (version_compare($now_version, '2.0.3', '<')) {
+            RY_WEZI::update_option('version', '2.0.3', true);
         }
     }
 }

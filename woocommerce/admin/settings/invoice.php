@@ -32,6 +32,11 @@ final class RY_WEZI_WC_Admin_Setting_Invoice
             $sections['ezpay_invoice'] = __('ezPay invoice', 'ry-woocommerce-ezpay-invoice');
         }
 
+        $enable_list = apply_filters('enable_ry_invoice', []);
+        if (count($enable_list) > 1) {
+            WC_Admin_Settings::add_error(__('Not recommended enable two invoice plugins at the same time!', 'ry-woocommerce-ezpay-invoice'));
+        }
+
         return $sections;
     }
 
@@ -49,15 +54,6 @@ final class RY_WEZI_WC_Admin_Setting_Invoice
 
     public function check_option()
     {
-        $enable_list = apply_filters('enable_ry_invoice', []);
-        if (1 == count($enable_list)) {
-            if ($enable_list != ['ezpay']) {
-                WC_Admin_Settings::add_error(__('Not recommended enable two invoice module/plugin at the same time!', 'ry-woocommerce-ezpay-invoice'));
-            }
-        } elseif (1 < count($enable_list)) {
-            WC_Admin_Settings::add_error(__('Not recommended enable two invoice module/plugin at the same time!', 'ry-woocommerce-ezpay-invoice'));
-        }
-
         if (!RY_WEZI_WC_Invoice::instance()->is_testmode()) {
             if (empty(RY_WEZI::get_option('ezpay_HashKey')) || empty(RY_WEZI::get_option('ezpay_HashIV'))) {
                 WC_Admin_Settings::add_error(__('ezPay invoice method failed to enable!', 'ry-woocommerce-ezpay-invoice'));

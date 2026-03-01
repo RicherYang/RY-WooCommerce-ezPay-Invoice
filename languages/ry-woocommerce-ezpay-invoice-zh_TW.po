@@ -47,7 +47,7 @@ msgstr "發票資訊"
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:10
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:96
 #: woocommerce/invoice-basic.php:33
-#: woocommerce/invoice-basic.php:233
+#: woocommerce/invoice-basic.php:238
 msgid "Invoice type"
 msgstr "發票類型"
 
@@ -109,32 +109,32 @@ msgstr "手機條碼"
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:33
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:102
 #: woocommerce/invoice-basic.php:57
-#: woocommerce/invoice-basic.php:243
+#: woocommerce/invoice-basic.php:248
 msgid "Carruer number"
 msgstr "載具編號"
 
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:38
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:107
 #: woocommerce/invoice-basic.php:62
-#: woocommerce/invoice-basic.php:251
+#: woocommerce/invoice-basic.php:256
 msgid "Tax ID number"
 msgstr "統一編號"
 
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:43
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:111
 #: woocommerce/invoice-basic.php:67
-#: woocommerce/invoice-basic.php:258
+#: woocommerce/invoice-basic.php:263
 msgid "Donate number"
 msgstr "捐贈愛心碼"
 
-#: woocommerce/admin/invoice.php:127
+#: woocommerce/admin/invoice.php:125
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:55
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:87
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:89
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:91
 #: woocommerce/invoice-api.php:90
 #: woocommerce/invoice-basic.php:220
-#: woocommerce/invoice.php:123
+#: woocommerce/invoice.php:124
 msgid "Invoice number"
 msgstr "發票號碼"
 
@@ -147,6 +147,7 @@ msgstr "發票隨機碼"
 
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:66
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:93
+#: woocommerce/invoice-basic.php:230
 msgid "Invoice date"
 msgstr "發票開立時間"
 
@@ -212,7 +213,7 @@ msgstr "總額負數不開立發票"
 msgid "Invalid invoice.<br>Please wait."
 msgstr "作廢發票中。<br>請耐心等待。"
 
-#: woocommerce/admin/settings/ry-tools-settings.php:12
+#: woocommerce/admin/settings/ry-tools-settings.php:14
 msgid "RY Tools"
 msgstr "RY Tools"
 
@@ -221,16 +222,11 @@ msgstr "RY Tools"
 msgid "ezPay invoice"
 msgstr "ezPay 電子發票"
 
-#: woocommerce/admin/settings/invoice.php:55
-#: woocommerce/admin/settings/invoice.php:58
-msgid "Not recommended enable two invoice module/plugin at the same time!"
-msgstr "不建議同時啟用兩個發票模組！"
-
-#: woocommerce/admin/settings/invoice.php:63
+#: woocommerce/admin/settings/invoice.php:59
 msgid "ezPay invoice method failed to enable!"
 msgstr "ezPay 發票模組啟用失敗！"
 
-#: woocommerce/admin/settings/invoice.php:68
+#: woocommerce/admin/settings/invoice.php:64
 msgid "Order no prefix only letters and numbers allowed"
 msgstr "訂單編號前綴只允許使用英文字母與數字"
 
@@ -404,7 +400,7 @@ msgstr "開立發票中。<br>請耐心等待。"
 msgid "Issue invoice"
 msgstr "開立發票"
 
-#: woocommerce/admin/settings/invoice.php:42
+#: woocommerce/admin/settings/invoice.php:47
 msgid "Required PHP function `simplexml_load_string`."
 msgstr "需要 PHP simplexml_load_string 函式。"
 
@@ -418,7 +414,7 @@ msgstr "使用貨號作為商品名稱"
 
 #: woocommerce/admin/settings/settings-invoice.php:125
 msgid "Fix amount product name"
-msgstr "金額異常處理模式 "
+msgstr "異常商品名稱"
 
 #. translators: %s: count
 #: woocommerce/admin/invoice.php:116
@@ -462,3 +458,7 @@ msgstr "支援 Kiosk 列印"
 #: woocommerce/admin/settings/settings-invoice.php:71
 msgid "Customer can print winning invoice at kiosk"
 msgstr "消費者可以在超商 Kiosk 列印中獎發票"
+
+#: woocommerce/admin/settings/invoice.php:37
+msgid "Not recommended enable two invoice plugins at the same time!"
+msgstr ""

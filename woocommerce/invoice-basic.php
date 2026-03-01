@@ -225,6 +225,11 @@ final class RY_WEZI_WC_Invoice_Basic
                     'name' => __('Invoice random number', 'ry-woocommerce-ezpay-invoice'),
                     'value' => $order->get_meta('_invoice_random_number'),
                 ];
+                $invoice_info[] = [
+                    'key' => 'invoice-date',
+                    'name' => __('Invoice date', 'ry-woocommerce-ezpay-invoice'),
+                    'value' => $order->get_meta('_invoice_date'),
+                ];
             }
         }
 
