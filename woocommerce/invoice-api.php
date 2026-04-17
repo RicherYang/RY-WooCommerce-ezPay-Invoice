@@ -69,7 +69,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         RY_WEZI_WC_Invoice::instance()->log('Issue invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
         $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
 
-        if (null === $result) {
+        if ($result === null) {
             return;
         }
 
@@ -262,9 +262,10 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         foreach ($data['ItemName'] as $key => $item) {
             $item = str_replace('|', '', $item);
             $data['ItemName'][$key] = mb_substr($item, 0, 30);
-            $data['ItemAmt'][$key] = round((isset($data['BuyerUBN']) ? ($data['ItemAmt'][$key] / 1.05) : $data['ItemAmt'][$key]), 0);
             $data['ItemCount'][$key] = round($data['ItemCount'][$key], 3);
-            $data['ItemPrice'][$key] = round($data['ItemAmt'][$key] / $data['ItemCount'][$key], 2);
+            $data['ItemAmt'][$key] = $data['Category'] == 'B2B' ? ($data['ItemAmt'][$key] / 1.05) : $data['ItemAmt'][$key];
+            $data['ItemPrice'][$key] = round($data['ItemAmt'][$key] / $data['ItemCount'][$key], 6);
+            $data['ItemAmt'][$key] = round($data['ItemAmt'][$key], 0);
             $data['ItemUnit'][$key] = __('parcel', 'ry-woocommerce-ezpay-invoice');
         }
 
@@ -316,7 +317,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         }
         $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
 
-        if (null === $result) {
+        if ($result === null) {
             return;
         }
 

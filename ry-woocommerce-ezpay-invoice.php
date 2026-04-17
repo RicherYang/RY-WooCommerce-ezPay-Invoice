@@ -4,9 +4,9 @@
  * Plugin Name: RY ezPay Invoice for WooCommerce
  * Plugin URI: https://ry-plugin.com/ry-woocommerce-ezpay-invoice
  * Description: WooCommerce order invoice for ezPay
- * Version: 2.0.3
- * Requires at least: 6.6
- * Requires PHP: 8.0
+ * Version: 2.1.0
+ * Requires at least: 6.8
+ * Requires PHP: 8.2
  * Requires Plugins: woocommerce
  * Author: Richer Yang
  * Author URI: https://richer.tw/
@@ -20,7 +20,7 @@
 
 function_exists('plugin_dir_url') or exit('No direct script access allowed');
 
-define('RY_WEZI_VERSION', '2.0.3');
+define('RY_WEZI_VERSION', '2.1.0');
 define('RY_WEZI_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RY_WEZI_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('RY_WEZI_PLUGIN_BASENAME', plugin_basename(__FILE__));

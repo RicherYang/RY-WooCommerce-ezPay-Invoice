@@ -162,7 +162,7 @@ msgid "Negative no invoice"
 msgstr "負數不開立"
 
 #: woocommerce/admin/meta-boxes/class-wc-meta-box-invoice-data.php:119
-#: woocommerce/invoice-api.php:337
+#: woocommerce/invoice-api.php:338
 msgid "Invalid invoice"
 msgstr "作廢發票"
 
@@ -375,7 +375,7 @@ msgstr "注意：僅建議基於開發需求使用本功能。"
 msgid "Invoice create time"
 msgstr "發票建立時間"
 
-#: woocommerce/invoice-api.php:268
+#: woocommerce/invoice-api.php:269
 msgid "parcel"
 msgstr "批"
 
@@ -387,7 +387,7 @@ msgstr "運費"
 msgid "return fee"
 msgstr "退款"
 
-#: woocommerce/invoice-api.php:305
+#: woocommerce/invoice-api.php:306
 msgid "Order cancel"
 msgstr "訂單取消"
 
@@ -442,7 +442,7 @@ msgstr "HashIV"
 
 #. translators: %1$s Error messade, %2$s Status code
 #: woocommerce/invoice-api.php:79
-#: woocommerce/invoice-api.php:326
+#: woocommerce/invoice-api.php:327
 #, php-format
 msgid "Issue invoice error: %1$s (%2$s)"
 msgstr "開立發票錯誤：%1$s (%2$s)"
