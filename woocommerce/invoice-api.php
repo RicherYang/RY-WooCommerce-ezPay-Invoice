@@ -265,7 +265,9 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             $data['ItemCount'][$key] = round($data['ItemCount'][$key], 3);
             $data['ItemAmt'][$key] = $data['Category'] == 'B2B' ? ($data['ItemAmt'][$key] / 1.05) : $data['ItemAmt'][$key];
             $data['ItemPrice'][$key] = round($data['ItemAmt'][$key] / $data['ItemCount'][$key], 6);
-            $data['ItemAmt'][$key] = round($data['ItemAmt'][$key], 0);
+            $data['ItemAmt'][$key] = (string) round($data['ItemCount'][$key] * $data['ItemPrice'][$key], 0);
+            $data['ItemCount'][$key] = (string) $data['ItemCount'][$key];
+            $data['ItemPrice'][$key] = (string) $data['ItemPrice'][$key];
             $data['ItemUnit'][$key] = __('parcel', 'ry-woocommerce-ezpay-invoice');
         }
 
