@@ -4,7 +4,7 @@ final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
 {
     protected static $_instance = null;
 
-    protected $model_type = 'ezpay_invoice';
+    protected string $model_type = 'ezpay_invoice';
 
     public static function instance(): RY_WEZI_WC_Invoice
     {

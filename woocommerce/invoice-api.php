@@ -4,12 +4,12 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
 {
     protected static $_instance = null;
 
-    protected $api_test_url = [
+    protected array $api_test_url = [
         'get' => 'https://cinv.ezpay.com.tw/Api/invoice_issue',
         'invalid' => 'https://cinv.ezpay.com.tw/Api/invoice_invalid',
     ];
 
-    protected $api_url = [
+    protected array $api_url = [
         'get' => 'https://inv.ezpay.com.tw/Api/invoice_issue',
         'invalid' => 'https://inv.ezpay.com.tw/Api/invoice_invalid',
     ];

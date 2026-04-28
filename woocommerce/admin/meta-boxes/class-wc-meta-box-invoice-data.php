@@ -1,7 +1,7 @@
 <?php
 class RY_WEZI_MetaBox_Invoice_Data
 {
-    protected static $fields;
+    private static array $fields;
 
     protected static function init_fields($order)
     {

@@ -6,7 +6,7 @@ final class RY_WEZI_LinkServer extends RY_Abstract_Link_Server
 {
     protected static $_instance = null;
 
-    protected $plugin_slug = 'ry-woocommerce-ezpay-invoice';
+    protected string $plugin_slug = 'ry-woocommerce-ezpay-invoice';
 
     public static function instance(): RY_WEZI_LinkServer
     {

@@ -4,7 +4,7 @@ include_once RY_WEZI_PLUGIN_DIR . 'includes/ry-global/abstract-license.php';
 
 final class RY_WEZI_License extends RY_Abstract_License
 {
-    public static $main_class = RY_WEZI::class;
+    public static string $main_class = RY_WEZI::class;
 
     protected static $_instance = null;
 
