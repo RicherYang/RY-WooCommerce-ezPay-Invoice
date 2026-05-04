@@ -1,8 +1,10 @@
 <?php
 
+defined('ABSPATH') or exit;
+
 class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
 {
-    protected static $_instance = null;
+    protected static ?self $_instance = null;
 
     protected array $api_test_url = [
         'get' => 'https://cinv.ezpay.com.tw/Api/invoice_issue',

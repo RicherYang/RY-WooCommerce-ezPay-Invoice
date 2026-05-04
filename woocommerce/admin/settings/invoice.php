@@ -1,8 +1,10 @@
 <?php
 
+defined('ABSPATH') or exit;
+
 final class RY_WEZI_WC_Admin_Setting_Invoice
 {
-    protected static $_instance = null;
+    protected static ?self $_instance = null;
 
     public static function instance(): RY_WEZI_WC_Admin_Setting_Invoice
     {

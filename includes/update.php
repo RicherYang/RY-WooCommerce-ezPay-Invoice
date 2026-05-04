@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or exit;
+
 final class RY_WEZI_update
 {
     public static function update()

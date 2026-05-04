@@ -1,8 +1,10 @@
 <?php
 
+defined('ABSPATH') or exit;
+
 final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
 {
-    protected static $_instance = null;
+    protected static ?self $_instance = null;
 
     protected string $model_type = 'ezpay_invoice';
 

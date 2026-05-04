@@ -6,7 +6,7 @@ if (class_exists('RY_WEZI_WC_Admin_Settings', false)) {
     }
 }
 
-class RY_WEZI_WC_Admin_Settings extends WC_Settings_Page
+final class RY_WEZI_WC_Admin_Settings extends WC_Settings_Page
 {
     public function __construct()
     {

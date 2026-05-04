@@ -1,5 +1,6 @@
 <?php
-class RY_WEZI_MetaBox_Invoice_Data
+
+final class RY_WEZI_MetaBox_Invoice_Data
 {
     private static array $fields;
 
