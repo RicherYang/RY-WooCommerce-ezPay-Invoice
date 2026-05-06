@@ -10,12 +10,12 @@ abstract class RY_WEZI_ezPay
         return substr($trade_no, 0, 18);
     }
 
-    protected function link_server($post_url, $args, $MerchantID, $HashKey, $HashIV)
+    protected function link_server(string $url, array $args, string $MerchantID, string $HashKey, string $HashIV, int $timeout = 30)
     {
         wc_set_time_limit(40);
 
-        $response = wp_remote_post($post_url, [
-            'timeout' => 30,
+        $response = wp_remote_post($url, [
+            'timeout' => $timeout,
             'body' => [
                 'MerchantID_' => $MerchantID,
                 'PostData_' => $this->args_encrypt($args, $HashKey, $HashIV),
@@ -29,14 +29,14 @@ abstract class RY_WEZI_ezPay
         }
 
         if (wp_remote_retrieve_response_code($response) != '200') {
-            RY_WEZI_WC_Invoice::instance()->log('Link HTTP status error', WC_Log_Levels::ERROR, ['info' => $response->get_error_messages()]);
+            RY_WEZI_WC_Invoice::instance()->log('Link HTTP status error', WC_Log_Levels::ERROR, ['info' => 'HTTP status ' . wp_remote_retrieve_response_code($response)]);
             return;
         }
 
         $result = @json_decode(wp_remote_retrieve_body($response));
 
         if (!is_object($result)) {
-            RY_WEZI_WC_Invoice::instance()->log('Link response parse failed', WC_Log_Levels::ERROR, ['info' => $response->get_error_messages()]);
+            RY_WEZI_WC_Invoice::instance()->log('Link response parse failed', WC_Log_Levels::ERROR, ['info' => 'Response body: ' . wp_remote_retrieve_body($response)]);
             return;
         }
 
