@@ -2,6 +2,8 @@
 
 abstract class RY_WEZI_ezPay
 {
+    protected const ENCRYPT_METHOD = 'aes-256-cbc';
+
     protected function generate_trade_no($order_ID, $order_prefix = '')
     {
         $trade_no = $order_prefix . $order_ID . 'TS' . random_int(0, 9) . strrev((string) time());
@@ -47,7 +49,7 @@ abstract class RY_WEZI_ezPay
     {
         ksort($args);
         $args_string = http_build_query($args);
-        $encrypt_string = openssl_encrypt($args_string, 'aes-256-cbc', $HashKey, OPENSSL_RAW_DATA, $HashIV);
+        $encrypt_string = openssl_encrypt($args_string, self::ENCRYPT_METHOD, $HashKey, OPENSSL_RAW_DATA, $HashIV);
 
         return bin2hex($encrypt_string);
     }
