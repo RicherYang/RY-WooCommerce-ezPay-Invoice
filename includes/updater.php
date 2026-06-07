@@ -29,14 +29,7 @@ final class RY_WEZI_Updater
             return $update;
         }
 
-        $update = RY_WEZI_LinkServer::instance()->check_version();
-        if (is_array($update)) {
-            $update['id'] = 'https://ry-plugin.com/ry-woocommerce-ezpay-invoice';
-            $update['url'] = 'https://ry-plugin.com/ry-woocommerce-ezpay-invoice';
-            $update['slug'] = 'ry-woocommerce-ezpay-invoice';
-        }
-
-        return $update;
+        return RY_WEZI_LinkServer::instance()->check_version();
     }
 
     public static function modify_plugin_details($result, $action, $args)
