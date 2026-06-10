@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or exit;
+
 if (class_exists('RY_WEZI_WC_Admin_Settings', false)) {
     if (!has_action('woocommerce_sections_rytools')) {
         return new RY_WEZI_WC_Admin_Settings();
