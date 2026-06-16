@@ -140,29 +140,32 @@ return [
     ],
     [
         'title' => __('Sandbox', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_invoice_testmode',
+        'id' => RY_WEZI::OPTION_PREFIX . 'testmode',
         'type' => 'checkbox',
         'default' => 'no',
-        'desc' => __('Enable ezPay invoice sandbox', 'ry-woocommerce-ezpay-invoice')
+        'desc' => __('Enable sandbox', 'ry-woocommerce-ezpay-invoice')
             . '<p class="description" style="margin-bottom:2px">' . __('Note: Recommend using this for development purposes only.', 'ry-woocommerce-ezpay-invoice') . '<p>',
     ],
     [
         'title' => __('MerchantID', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_MerchantID',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apikey[MerchantID]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'title' => __('HashKey', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_HashKey',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apikey[HashKey]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'title' => __('HashIV', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_HashIV',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apikey[HashIV]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'id' => 'api_options',

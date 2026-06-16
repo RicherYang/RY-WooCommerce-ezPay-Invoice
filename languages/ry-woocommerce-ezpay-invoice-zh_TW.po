@@ -213,7 +213,7 @@ msgstr "總額負數不開立發票"
 msgid "Invalid invoice.<br>Please wait."
 msgstr "作廢發票中。<br>請耐心等待。"
 
-#: woocommerce/admin/settings/ry-tools-settings.php:14
+#: woocommerce/admin/settings/ry-tools-settings.php:16
 msgid "RY Tools"
 msgstr "RY Tools"
 
@@ -222,11 +222,7 @@ msgstr "RY Tools"
 msgid "ezPay invoice"
 msgstr "ezPay 電子發票"
 
-#: woocommerce/admin/settings/invoice.php:61
-msgid "ezPay invoice method failed to enable!"
-msgstr "ezPay 發票模組啟用失敗！"
-
-#: woocommerce/admin/settings/invoice.php:66
+#: woocommerce/admin/settings/invoice.php:60
 msgid "Order no prefix only letters and numbers allowed"
 msgstr "訂單編號前綴只允許使用英文字母與數字"
 
@@ -363,10 +359,6 @@ msgstr "折價"
 msgid "API credentials"
 msgstr "API 憑證"
 
-#: woocommerce/admin/settings/settings-invoice.php:146
-msgid "Enable ezPay invoice sandbox"
-msgstr "啟用 ezPay 電子發票測試模式"
-
 #: woocommerce/admin/settings/settings-invoice.php:147
 msgid "Note: Recommend using this for development purposes only."
 msgstr "注意：僅建議基於開發需求使用本功能。"
@@ -432,11 +424,11 @@ msgstr "WooCommerce order invoice for ezPay"
 msgid "MerchantID"
 msgstr "商店代號"
 
-#: woocommerce/admin/settings/settings-invoice.php:156
+#: woocommerce/admin/settings/settings-invoice.php:157
 msgid "HashKey"
 msgstr "HashKey"
 
-#: woocommerce/admin/settings/settings-invoice.php:162
+#: woocommerce/admin/settings/settings-invoice.php:164
 msgid "HashIV"
 msgstr "HashIV"
 
@@ -462,3 +454,7 @@ msgstr "消費者可以在超商 Kiosk 列印中獎發票"
 #: woocommerce/admin/settings/invoice.php:39
 msgid "Not recommended enable two invoice plugins at the same time!"
 msgstr "不建議同時啟用兩個發票外掛！"
+
+#: woocommerce/admin/settings/settings-invoice.php:146
+msgid "Enable sandbox"
+msgstr ""

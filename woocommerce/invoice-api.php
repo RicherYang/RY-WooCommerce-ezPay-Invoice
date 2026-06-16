@@ -39,7 +39,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             return false;
         }
 
-        list($MerchantID, $HashKey, $HashIV) = RY_WEZI_WC_Invoice::instance()->get_api_info();
+        $api_info = RY_WEZI_WC_Invoice::instance()->get_api_info();
 
         $args = $this->make_get_data($order);
         if (0 == $args['TotalAmt']) {
@@ -69,7 +69,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         }
 
         RY_WEZI_WC_Invoice::instance()->log('Issue invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
-        $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
+        $result = $this->link_server($post_url, $args, $api_info['MerchantID'], $api_info['HashKey'], $api_info['HashIV']);
 
         if ($result === null) {
             return;
@@ -298,7 +298,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             return false;
         }
 
-        list($MerchantID, $HashKey, $HashIV) = RY_WEZI_WC_Invoice::instance()->get_api_info();
+        $api_info = RY_WEZI_WC_Invoice::instance()->get_api_info();
 
         $now = new DateTime('now', new DateTimeZone('Asia/Taipei'));
 
@@ -319,7 +319,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         } else {
             $post_url = $this->api_url['invalid'];
         }
-        $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
+        $result = $this->link_server($post_url, $args, $api_info['MerchantID'], $api_info['HashKey'], $api_info['HashIV']);
 
         if ($result === null) {
             return;

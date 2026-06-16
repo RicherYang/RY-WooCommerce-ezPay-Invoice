@@ -10,7 +10,7 @@ abstract class RY_WEZI_Model
 
     public function is_testmode(): bool
     {
-        return 'yes' === RY_WEZI::get_option($this->model_type . '_testmode', 'no');
+        return 'yes' === RY_WEZI::get_option('testmode', 'no');
     }
 
     public function log($message, $level = WC_Log_Levels::INFO, $context = [])

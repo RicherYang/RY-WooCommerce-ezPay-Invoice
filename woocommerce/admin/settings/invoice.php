@@ -56,12 +56,6 @@ final class RY_WEZI_WC_Admin_Setting_Invoice
 
     public function check_option()
     {
-        if (!RY_WEZI_WC_Invoice::instance()->is_testmode()) {
-            if (empty(RY_WEZI::get_option('ezpay_HashKey')) || empty(RY_WEZI::get_option('ezpay_HashIV'))) {
-                WC_Admin_Settings::add_error(__('ezPay invoice method failed to enable!', 'ry-woocommerce-ezpay-invoice'));
-            }
-        }
-
         if (!preg_match('/^[a-z0-9]*$/i', RY_WEZI::get_option('order_prefix', ''))) {
             WC_Admin_Settings::add_error(__('Order no prefix only letters and numbers allowed', 'ry-woocommerce-ezpay-invoice'));
             RY_WEZI::update_option('order_prefix', '');
