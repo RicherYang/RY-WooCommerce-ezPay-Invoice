@@ -153,7 +153,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
                     case 'ezpay_host':
                         $data['CarrierType'] = '2';
                         $data['CarrierNum'] = wp_hash($order->get_billing_email());
-                        $data['KioskPrintFlag'] = 'yes' === RY_WEZI::get_option('support_kiosk_print', 'no') ? '1' : '';
+                        $data['KioskPrintFlag'] = $api_info['kiosk_print'] ? '1' : '';
                         break;
                     case 'MOICA':
                         $data['CarrierType'] = '1';

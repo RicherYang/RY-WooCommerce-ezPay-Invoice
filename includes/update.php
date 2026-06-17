@@ -15,10 +15,11 @@ final class RY_WEZI_update
             return;
         }
 
-        if (version_compare($now_version, '2.1.6', '<')) {
+        if (version_compare($now_version, '2.3.0', '<')) {
             if (RY_WEZI::get_option('ezpay_MerchantID') !== false) {
                 RY_WEZI::update_option('apiinfo', [
                     'prefix' => RY_WEZI::get_option('order_prefix'),
+                    'kiosk_print' => RY_WEZI::get_option('support_kiosk_print'),
                     'use_sku' => RY_WEZI::get_option('use_sku_as_name'),
                     'abnormal_mode' => RY_WEZI::get_option('amount_abnormal_mode'),
                     'abnormal_product' => RY_WEZI::get_option('amount_abnormal_product'),
@@ -28,6 +29,7 @@ final class RY_WEZI_update
                     'HashIV' => RY_WEZI::get_option('ezpay_HashIV'),
                 ], false);
                 RY_WEZI::delete_option('order_prefix');
+                RY_WEZI::delete_option('support_kiosk_print');
                 RY_WEZI::delete_option('use_sku_as_name');
                 RY_WEZI::delete_option('amount_abnormal_mode');
                 RY_WEZI::delete_option('amount_abnormal_product');
@@ -41,7 +43,7 @@ final class RY_WEZI_update
                 RY_WEZI::update_option('skip_foreign_order', RY_WEZI::get_option('skip_foreign_order'), true);
             }
 
-            RY_WEZI::update_option('version', '2.1.6', true);
+            RY_WEZI::update_option('version', '2.3.0', true);
         }
     }
 }

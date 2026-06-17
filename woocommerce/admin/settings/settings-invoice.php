@@ -68,7 +68,7 @@ return [
     ],
     [
         'title' => __('Support kiosk print', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'support_kiosk_print',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[kiosk_print]',
         'type' => 'checkbox',
         'default' => 'no',
         'desc' => __('Customer can print winning invoice at kiosk', 'ry-woocommerce-ezpay-invoice'),
