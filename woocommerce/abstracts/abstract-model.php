@@ -8,11 +8,6 @@ abstract class RY_WEZI_Model
 
     private $log;
 
-    public function is_testmode(): bool
-    {
-        return 'yes' === RY_WEZI::get_option($this->model_type . '_testmode', 'no');
-    }
-
     public function log($message, $level = WC_Log_Levels::INFO, $context = [])
     {
         if ($this->log_enabled === null) {

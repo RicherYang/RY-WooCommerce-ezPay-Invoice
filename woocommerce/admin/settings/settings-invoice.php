@@ -30,10 +30,11 @@ return [
     ],
     [
         'title' => __('Order no prefix', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'order_prefix',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[prefix]',
         'type' => 'text',
         'desc' => __('The prefix string of order no. Only letters and numbers allowed.', 'ry-woocommerce-ezpay-invoice'),
         'desc_tip' => true,
+        'autoload' => false,
     ],
     [
         'title' => __('Show invoice number', 'ry-woocommerce-ezpay-invoice'),
@@ -74,10 +75,11 @@ return [
     ],
     [
         'title' => __('User SKU as product name', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'use_sku_as_name',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[use_sku]',
         'type' => 'checkbox',
         'default' => 'no',
         'desc' => __('If product no SKU, back to use product name', 'ry-woocommerce-ezpay-invoice'),
+        'autoload' => false,
     ],
     [
         'title' => __('Get mode', 'ry-woocommerce-ezpay-invoice'),
@@ -101,6 +103,7 @@ return [
         'type' => 'checkbox',
         'default' => 'no',
         'desc' => __('Disable auto get invoice for order billing country and shipping country are not in Taiwan.', 'ry-woocommerce-ezpay-invoice'),
+        'autoload' => false,
     ],
     [
         'title' => __('Invalid mode', 'ry-woocommerce-ezpay-invoice'),
@@ -114,7 +117,7 @@ return [
     ],
     [
         'title' => __('Amount abnormal mode', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'amount_abnormal_mode',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[abnormal_mode]',
         'type' => 'select',
         'default' => '',
         'options' => [
@@ -122,12 +125,14 @@ return [
             'product' => _x('add one product to match order amount', 'amount abnormal mode', 'ry-woocommerce-ezpay-invoice'),
             'order' => _x('change order total amount', 'amount abnormal mode', 'ry-woocommerce-ezpay-invoice'),
         ],
+        'autoload' => false,
     ],
     [
         'title' => __('Fix amount product name', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'amount_abnormal_product',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[abnormal_product]',
         'type' => 'text',
         'default' => __('Discount', 'ry-woocommerce-ezpay-invoice'),
+        'autoload' => false,
     ],
     [
         'id' => 'invoice_options',
@@ -140,29 +145,33 @@ return [
     ],
     [
         'title' => __('Sandbox', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_invoice_testmode',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[testmode]',
         'type' => 'checkbox',
         'default' => 'no',
         'desc' => __('Enable ezPay invoice sandbox', 'ry-woocommerce-ezpay-invoice')
             . '<p class="description" style="margin-bottom:2px">' . __('Note: Recommend using this for development purposes only.', 'ry-woocommerce-ezpay-invoice') . '<p>',
+        'autoload' => false,
     ],
     [
         'title' => __('MerchantID', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_MerchantID',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[MerchantID]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'title' => __('HashKey', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_HashKey',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[HashKey]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'title' => __('HashIV', 'ry-woocommerce-ezpay-invoice'),
-        'id' => RY_WEZI::OPTION_PREFIX . 'ezpay_HashIV',
+        'id' => RY_WEZI::OPTION_PREFIX . 'apiinfo[HashIV]',
         'type' => 'text',
         'default' => '',
+        'autoload' => false,
     ],
     [
         'id' => 'api_options',

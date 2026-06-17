@@ -142,10 +142,23 @@ final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
 
     public function get_api_info()
     {
-        $MerchantID = RY_WEZI::get_option('ezpay_MerchantID');
-        $HashKey = RY_WEZI::get_option('ezpay_HashKey');
-        $HashIV = RY_WEZI::get_option('ezpay_HashIV');
+        $api_info = RY_WEZI::get_option('apiinfo', []);
+        if (!is_array($api_info)) {
+            $api_info = [];
+        }
+        $api_info = array_merge([
+            'prefix' => '',
+            'use_sku' => 'no',
+            'abnormal_mode' => '',
+            'abnormal_product' => __('Discount', 'ry-woocommerce-ezpay-invoice'),
+            'testmode' => 'no',
+            'MerchantID' => '',
+            'HashKey' => '',
+            'HashIV' => '',
+        ], $api_info);
+        $api_info['use_sku'] = wc_string_to_bool($api_info['use_sku']);
+        $api_info['testmode'] = wc_string_to_bool($api_info['testmode']);
 
-        return [$MerchantID, $HashKey, $HashIV];
+        return $api_info;
     }
 }

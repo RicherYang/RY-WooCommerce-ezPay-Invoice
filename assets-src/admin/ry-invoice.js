@@ -15,12 +15,12 @@ $(function () {
         }).trigger('change');
     }
 
-    if ($('#RY_WEZI_amount_abnormal_mode').length) {
-        $('#RY_WEZI_amount_abnormal_mode').on('change', function () {
+    if ($('#RY_WEZI_apiinfo\\[abnormal_mode\\]').length) {
+        $('#RY_WEZI_apiinfo\\[abnormal_mode\\]').on('change', function () {
             if ($(this).val() == 'product') {
-                $('#RY_WEZI_amount_abnormal_product').closest('tr').show();
+                $('#RY_WEZI_apiinfo\\[abnormal_product\\]').closest('tr').show();
             } else {
-                $('#RY_WEZI_amount_abnormal_product').closest('tr').hide();
+                $('#RY_WEZI_apiinfo\\[abnormal_product\\]').closest('tr').hide();
             }
         }).trigger('change');
     }

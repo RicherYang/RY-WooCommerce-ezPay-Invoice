@@ -39,9 +39,9 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             return false;
         }
 
-        list($MerchantID, $HashKey, $HashIV) = RY_WEZI_WC_Invoice::instance()->get_api_info();
+        $api_info = RY_WEZI_WC_Invoice::instance()->get_api_info();
 
-        $args = $this->make_get_data($order);
+        $args = $this->make_get_data($order, $api_info);
         if (0 == $args['TotalAmt']) {
             $order->update_meta_data('_invoice_number', 'zero');
             $order->save();
@@ -62,14 +62,14 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         $args['ItemUnit'] = implode('|', $args['ItemUnit']);
         $args['ItemAmt'] = implode('|', $args['ItemAmt']);
 
-        if (RY_WEZI_WC_Invoice::instance()->is_testmode()) {
+        if ($api_info['testmode']) {
             $post_url = $this->api_test_url['get'];
         } else {
             $post_url = $this->api_url['get'];
         }
 
         RY_WEZI_WC_Invoice::instance()->log('Issue invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
-        $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
+        $result = $this->link_server($post_url, $args, $api_info['MerchantID'], $api_info['HashKey'], $api_info['HashIV']);
 
         if ($result === null) {
             return;
@@ -103,7 +103,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         do_action('ry_wezi_get_invoice_response', $result, $order);
     }
 
-    protected function make_get_data($order)
+    protected function make_get_data($order, $api_info)
     {
         $country = $order->get_billing_country();
         $countries = WC()->countries->get_countries();
@@ -119,7 +119,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             'RespondType' => 'JSON',
             'Version' => '1.5',
             'TimeStamp' => $now->getTimestamp(),
-            'MerchantOrderNo' => $this->generate_trade_no($order->get_id(), RY_WEZI::get_option('order_prefix', '')),
+            'MerchantOrderNo' => $this->generate_trade_no($order->get_id(), $api_info['prefix']),
             'Status' => '1',
             'Category' => 'B2C',
             'CarrierType' => '',
@@ -182,7 +182,6 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         }
 
         $total_refunded = $order->get_total_refunded();
-        $use_sku = 'yes' === RY_WEZI::get_option('use_sku_as_name', 'no');
         $order_items = $order->get_items(['line_item']);
         if (count($order_items)) {
             foreach ($order_items as $order_item) {
@@ -202,7 +201,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
                 }
 
                 $item_name = '';
-                if ($use_sku && method_exists($order_item, 'get_product')) {
+                if ($api_info['use_sku'] && method_exists($order_item, 'get_product')) {
                     $item_name = $order_item->get_product()->get_sku();
                 }
                 if (empty($item_name)) {
@@ -247,9 +246,9 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
 
         $total_amount = array_sum($data['ItemAmt']);
         if ($total_amount != $data['TotalAmt']) {
-            switch (RY_WEZI::get_option('amount_abnormal_mode', '')) {
+            switch ($api_info['abnormal_mode']) {
                 case 'product':
-                    $data['ItemName'][] = RY_WEZI::get_option('amount_abnormal_product', __('Discount', 'ry-woocommerce-ezpay-invoice'));
+                    $data['ItemName'][] = $api_info['abnormal_product'];
                     $data['ItemCount'][] = 1;
                     $data['ItemAmt'][] = round($data['TotalAmt'] - $total_amount, wc_get_price_decimals());
                     break;
@@ -298,7 +297,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             return false;
         }
 
-        list($MerchantID, $HashKey, $HashIV) = RY_WEZI_WC_Invoice::instance()->get_api_info();
+        $api_info = RY_WEZI_WC_Invoice::instance()->get_api_info();
 
         $now = new DateTime('now', new DateTimeZone('Asia/Taipei'));
 
@@ -314,12 +313,12 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
 
         RY_WEZI_WC_Invoice::instance()->log('Invalid invoice for #' . $order->get_id(), WC_Log_Levels::INFO, ['data' => $args]);
 
-        if (RY_WEZI_WC_Invoice::instance()->is_testmode()) {
+        if ($api_info['testmode']) {
             $post_url = $this->api_test_url['invalid'];
         } else {
             $post_url = $this->api_url['invalid'];
         }
-        $result = $this->link_server($post_url, $args, $MerchantID, $HashKey, $HashIV);
+        $result = $this->link_server($post_url, $args, $api_info['MerchantID'], $api_info['HashKey'], $api_info['HashIV']);
 
         if ($result === null) {
             return;
