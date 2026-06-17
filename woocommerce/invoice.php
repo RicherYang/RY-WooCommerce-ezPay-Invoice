@@ -142,10 +142,10 @@ final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
 
     public function get_api_info()
     {
-        return RY_WEZI::get_option('apikey', [
-            'MerchantID' => '',
-            'HashKey' => '',
-            'HashIV' => '',
-        ]);
+        $MerchantID = RY_WEZI::get_option('ezpay_MerchantID');
+        $HashKey = RY_WEZI::get_option('ezpay_HashKey');
+        $HashIV = RY_WEZI::get_option('ezpay_HashIV');
+
+        return [$MerchantID, $HashKey, $HashIV];
     }
 }
