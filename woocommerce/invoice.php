@@ -148,6 +148,7 @@ final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
         }
         $api_info = array_merge([
             'prefix' => '',
+            'kiosk_print' => 'no',
             'use_sku' => 'no',
             'abnormal_mode' => '',
             'abnormal_product' => __('Discount', 'ry-woocommerce-ezpay-invoice'),
@@ -156,6 +157,7 @@ final class RY_WEZI_WC_Invoice extends RY_WEZI_Model
             'HashKey' => '',
             'HashIV' => '',
         ], $api_info);
+        $api_info['kiosk_print'] = wc_string_to_bool($api_info['kiosk_print']);
         $api_info['use_sku'] = wc_string_to_bool($api_info['use_sku']);
         $api_info['testmode'] = wc_string_to_bool($api_info['testmode']);
 
