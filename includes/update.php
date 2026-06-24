@@ -6,12 +6,14 @@ final class RY_WEZI_update
 {
     public static function update()
     {
-        $now_version = RY_WEZI::get_option('version');
+        $now_version = RY_WEZI::get_option('version', '0.0.0');
 
-        if (false === $now_version) {
-            $now_version = '0.0.0';
-        }
         if (RY_WEZI_VERSION === $now_version) {
+            return;
+        }
+
+        if ($now_version === '0.0.0') {
+            RY_WEZI::update_option('version', RY_WEZI_VERSION, true);
             return;
         }
 
