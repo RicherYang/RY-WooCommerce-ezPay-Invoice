@@ -61,6 +61,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         $args['ItemPrice'] = implode('|', $args['ItemPrice']);
         $args['ItemUnit'] = implode('|', $args['ItemUnit']);
         $args['ItemAmt'] = implode('|', $args['ItemAmt']);
+        $args['ItemTaxType'] = implode('|', $args['ItemTaxType']);
 
         if ($api_info['testmode']) {
             $post_url = $this->api_test_url['get'];
@@ -129,20 +130,21 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
 
             'TaxType' => '1',
             'TaxRate' => '5',
+            'TaxAmt' => '0',
             'TotalAmt' => round($order->get_total() - $order->get_total_refunded(), 0),
 
             'ItemName' => [],
             'ItemCount' => [],
-            'ItemPrice' => [],
             'ItemUnit' => [],
+            'ItemPrice' => [],
             'ItemAmt' => [],
+            'ItemTaxType' => [],
 
-            'BuyerName' => $order->get_billing_last_name() . $order->get_billing_first_name(),
-            'BuyerAddress' => $full_country . $full_state . $order->get_billing_city() . $order->get_billing_address_1() . $order->get_billing_address_2(),
+            'BuyerName' => __('Customer', 'ry-woocommerce-ezpay-invoice'),
+            'BuyerAddress' => $full_country,
             'BuyerEmail' => $order->get_billing_email(),
         ];
-        $data['Amt'] = round($data['TotalAmt'] / 1.05);
-        $data['TaxAmt'] = $data['TotalAmt'] - $data['Amt'];
+        $data['Amt'] = $data['TotalAmt'];
 
         switch ($order->get_meta('_invoice_type')) {
             case 'personal':
@@ -168,11 +170,11 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             case 'company':
                 $data['Category'] = 'B2B';
                 $data['PrintFlag'] = 'Y';
+                $data['Amt'] = round($data['TotalAmt'] / 1.05);
+                $data['TaxAmt'] = $data['TotalAmt'] - $data['Amt'];
                 $data['BuyerUBN'] = $order->get_meta('_invoice_no');
-                $company = $order->get_billing_company();
-                if ($company) {
-                    $data['BuyerName'] = $company;
-                } else {
+                $data['BuyerName'] = $order->get_billing_company();
+                if (empty($data['BuyerName'])) {
                     $data['BuyerName'] = $data['BuyerUBN'];
                 }
                 break;
@@ -227,6 +229,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
                 $data['ItemName'][] = $fee_item->get_name();
                 $data['ItemCount'][] = $item_qty == 0 ? 1 : $item_qty;
                 $data['ItemAmt'][] = $item_total;
+                $data['ItemTaxType'][] = '1';
             }
         }
 
@@ -236,12 +239,14 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
             $data['ItemName'][] = __('shipping fee', 'ry-woocommerce-ezpay-invoice');
             $data['ItemCount'][] = 1;
             $data['ItemAmt'][] = round($shipping_fee, wc_get_price_decimals());
+            $data['ItemTaxType'][] = '1';
         }
 
         if ($total_refunded != 0) {
             $data['ItemName'][] = __('return fee', 'ry-woocommerce-ezpay-invoice');
             $data['ItemCount'][] = 1;
             $data['ItemAmt'][] = round(-$total_refunded, wc_get_price_decimals());
+            $data['ItemTaxType'][] = '1';
         }
 
         $total_amount = array_sum($data['ItemAmt']);
@@ -251,9 +256,14 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
                     $data['ItemName'][] = $api_info['abnormal_product'];
                     $data['ItemCount'][] = 1;
                     $data['ItemAmt'][] = round($data['TotalAmt'] - $total_amount, wc_get_price_decimals());
+                    $data['ItemTaxType'][] = '1';
                     break;
                 case 'order':
                     $data['TotalAmt'] = round($total_amount, 0);
+                    if ($data['TaxAmt'] !== '0') {
+                        $data['Amt'] = round($data['TotalAmt'] / 1.05);
+                        $data['TaxAmt'] = $data['TotalAmt'] - $data['Amt'];
+                    }
                     break;
                 default:
                     break;
@@ -261,10 +271,9 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         }
 
         foreach ($data['ItemName'] as $key => $item) {
-            $item = str_replace('|', '', $item);
-            $data['ItemName'][$key] = mb_substr($item, 0, 30);
+            $data['ItemName'][$key] = mb_strimwidth(str_replace('|', '', $item), 0, 80, '');
             $data['ItemCount'][$key] = round($data['ItemCount'][$key], 3);
-            $data['ItemAmt'][$key] = $data['Category'] == 'B2B' ? ($data['ItemAmt'][$key] / 1.05) : $data['ItemAmt'][$key];
+            $data['ItemAmt'][$key] = $data['Category'] == 'B2B' ? round($data['ItemAmt'][$key] / 1.05, wc_get_price_decimals()) : $data['ItemAmt'][$key];
             $data['ItemPrice'][$key] = round($data['ItemAmt'][$key] / $data['ItemCount'][$key], 6);
             $data['ItemAmt'][$key] = (string) round($data['ItemCount'][$key] * $data['ItemPrice'][$key], 0);
             $data['ItemCount'][$key] = (string) $data['ItemCount'][$key];
@@ -273,7 +282,7 @@ class RY_WEZI_WC_Invoice_Api extends RY_WEZI_ezPay
         }
 
         $data['Comment'] = apply_filters('ry_wezi_invoice_remark', $data['Comment'], $data, $order);
-        $data['Comment'] = mb_substr($data['Comment'], 0, 100);
+        $data['Comment'] = mb_strimwidth($data['Comment'], 0, 200, '');
 
         return $data;
     }

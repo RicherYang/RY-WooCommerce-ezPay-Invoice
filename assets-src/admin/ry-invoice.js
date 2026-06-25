@@ -69,7 +69,7 @@ $(function () {
 
     $('#get_ezpay_invoice').on('click', function () {
         $.blockUI({
-            message: RyWsiAdminInvoiceParams.i18n.get
+            message: RyWeziAdminInvoiceParams.i18n.get
         });
         $.ajax({
             url: ajaxurl,
@@ -77,7 +77,7 @@ $(function () {
             data: {
                 action: 'RY_WEZI_get',
                 id: $(this).data('orderid'),
-                _ajax_nonce: RyWsiAdminInvoiceParams._nonce.get
+                _ajax_nonce: RyWeziAdminInvoiceParams._nonce.get
             }
         }).always(function () {
             location.reload();
@@ -86,7 +86,7 @@ $(function () {
 
     $('#invalid_ezpay_invoice').on('click', function () {
         $.blockUI({
-            message: RyWsiAdminInvoiceParams.i18n.invalid
+            message: RyWeziAdminInvoiceParams.i18n.invalid
         });
         $.ajax({
             url: ajaxurl,
@@ -94,7 +94,7 @@ $(function () {
             data: {
                 action: 'RY_WEZI_invalid',
                 id: $(this).data('orderid'),
-                _ajax_nonce: RyWsiAdminInvoiceParams._nonce.invalid
+                _ajax_nonce: RyWeziAdminInvoiceParams._nonce.invalid
             }
         }).always(function () {
             location.reload();

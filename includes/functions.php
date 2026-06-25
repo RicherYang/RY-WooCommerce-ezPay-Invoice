@@ -22,7 +22,10 @@ function rywezi_carruer_type_to_name($carruer_type)
     if (empty($type_name)) {
         $type_name = [
             'none' => _x('none', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
+            'amego_host' => _x('amego_host', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
             'ezpay_host' => _x('ezpay_host', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
+            'ecpay_host' => _x('ecpay_host', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
+            'smilepay_host' => _x('smilepay_host', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
             'MOICA' => _x('MOICA', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
             'phone_barcode' => _x('phone_barcode', 'carruer type', 'ry-woocommerce-ezpay-invoice'),
         ];

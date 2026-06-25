@@ -62,10 +62,10 @@ final class RY_WEZI_WC_Admin_Invoice
 
         if (in_array($screen_id, ['shop_order', 'edit-shop_order', 'woocommerce_page_wc-settings', 'woocommerce_page_wc-orders'])) {
             $asset_info = include RY_WEZI_PLUGIN_DIR . 'assets/admin/ry-invoice.asset.php';
-            wp_enqueue_script('ry-wsi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.js', $asset_info['dependencies'], $asset_info['version'], true);
-            wp_enqueue_style('ry-wsi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.css', [], $asset_info['version']);
+            wp_enqueue_script('ry-wezi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.js', $asset_info['dependencies'], $asset_info['version'], true);
+            wp_enqueue_style('ry-wezi-admin-invoice', RY_WEZI_PLUGIN_URL . 'assets/admin/ry-invoice.css', [], $asset_info['version']);
 
-            wp_localize_script('ry-wsi-admin-invoice', 'RyWsiAdminInvoiceParams', [
+            wp_localize_script('ry-wezi-admin-invoice', 'RyWeziAdminInvoiceParams', [
                 'i18n' => [
                     'get' => __('Issue invoice.<br>Please wait.', 'ry-woocommerce-ezpay-invoice'),
                     'invalid' => __('Invalid invoice.<br>Please wait.', 'ry-woocommerce-ezpay-invoice'),

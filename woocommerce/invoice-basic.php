@@ -140,7 +140,7 @@ final class RY_WEZI_WC_Invoice_Basic
     public function show_invoice_form($checkout)
     {
         $asset_info = include RY_WEZI_PLUGIN_DIR . 'assets/ry-checkout.asset.php';
-        wp_enqueue_script('ry-wsi-checkout', RY_WEZI_PLUGIN_URL . 'assets/ry-checkout.js', $asset_info['dependencies'], $asset_info['version'], true);
+        wp_enqueue_script('ry-wezi-checkout', RY_WEZI_PLUGIN_URL . 'assets/ry-checkout.js', $asset_info['dependencies'], $asset_info['version'], true);
 
         wc_get_template('checkout/form-invoice.php', [
             'checkout' => $checkout,
